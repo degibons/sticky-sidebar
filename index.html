@@ -161,7 +161,7 @@
 
 <h2 id="configure-your-css">Configure Your CSS</h2>
 
-<p>Next you are going to need some CSS just to improve performance and prevent repainting on scrolling. Sticky sidebar plugin doesn’t add below style as inline style so you need to add it manually in main stylesheet.</p>
+<p>Next you are going to need some CSS just to improve performance and prevent repainting on scrolling. Sticky sidebar plugin doesn’t add below style as inline style so you need to add it manually in your stylesheet.</p>
 
 <figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar</span><span class="p">{</span>
     <span class="py">will-change</span><span class="p">:</span> <span class="n">min-height</span><span class="p">;</span>
@@ -252,7 +252,7 @@ Defaults to the closest parent of the sticky element. Highly recommend to define
 
 <p><code class="highlighter-rouge">affixed.static.sticky</code> — The event fires immdiately after the element has been returned to its position.</p>
 
-<p><code class="highlighter-rouge">recalcDimenstions.sticky</code> — Trigger this event will cause force to re-calculate all cached dimentions of sticky sidebar plugin.</p>
+<p><code class="highlighter-rouge">update.sticky</code> — Trigger this event will cause force to re-calculate all cached dimentions of sticky sidebar plugin.</p>
 
 <p>For example if you want to detect when element sticks top and bottom we might do:</p>
 
@@ -265,15 +265,15 @@ Defaults to the closest parent of the sticky element. Highly recommend to define
 <span class="p">});</span>
 
 <span class="c1">// Force to re-calculate all cached dimentions.</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">'.sidebar'</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'recalcDimenstions.sticky'</span><span class="p">);</span></code></pre></figure>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'.sidebar'</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'update.sticky'</span><span class="p">);</span></code></pre></figure>
 
 <hr />
 
 <h2 id="methods">Methods</h2>
 
-<p><code class="highlighter-rouge">recalcDimensions</code> - Force re-calculate all cached dimensions of sidebar, container and viewport. The same function of trigger event <code class="highlighter-rouge">recalcDimensions.sticky</code> read about events above.</p>
+<p><code class="highlighter-rouge">updateSticky</code> - Force re-calculate all cached dimensions of sidebar, container and viewport and update position of sidebar according to the new dimenstions. The same function of trigger event <code class="highlighter-rouge">update.sticky</code> read about events above.</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">'.sidebar'</span><span class="p">).</span><span class="nx">stickySidebar</span><span class="p">(</span><span class="s1">'recalcDimensions'</span><span class="p">);</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">'.sidebar'</span><span class="p">).</span><span class="nx">stickySidebar</span><span class="p">(</span><span class="s1">'updateSticky'</span><span class="p">);</span></code></pre></figure>
 
 <p><code class="highlighter-rouge">destroy</code> - remove all inline style, helper classes and event listeners.</p>
 
