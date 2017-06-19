@@ -214,7 +214,7 @@
         _onScroll: function(event){
             if( ! this.$sidebar.is(':visible') ) return;
             
-            this.animateSticky();
+            this.stickyPosition();
         },
 
         /**
@@ -224,10 +224,8 @@
          * @param {Object} event - Event object passed from listener.
          */
         _onResize: function(event){
-            requestAnimationFrame($.proxy(function(){
-                this._widthBreakpoint();
-                this.updateSticky();
-            }, this) );
+            this._widthBreakpoint();
+            this.updateSticky();
         },
 
         /**
@@ -397,11 +395,11 @@
                 case 'VIEWPORT-BOTTOM':
                 case 'VIEWPORT-UNBOTTOM':
                 case 'CONTAINER-BOTTOM':
-                    style.outer = {minHeight: dimensions.translateY + dimensions.sidebarHeight};
+                    style.outer = {height: dimensions.sidebarHeight, position: 'relative'};
                     break;
             }
 
-            style.outer = $.extend({}, {minHeight: ''}, style.outer);
+            style.outer = $.extend({}, {height: '', position: ''}, style.outer);
             style.inner = $.extend({}, {position: 'relative', top: '', left: '', bottom: '', width: '',  transform: ''}, style.inner);
 
             return style;
@@ -416,7 +414,7 @@
          */
        stickyPosition: function(force){
             if( ! this.$sidebar.is(':visible') || this._breakpoint ) return;
-
+            
             force = force || false;
             
             var offsetTop = this.options.topSpacing;
@@ -436,13 +434,14 @@
                 
                 var affixedEvent = $.Event('affixed.'+ affixType.replace('viewport', '') + StickySidebar.EVENT_KEY);
                 
+                this.$sidebar.css(style.outer);
                 this.$sidebarInner.css(style.inner);
+
                 this.$sidebar.trigger(affixedEvent);
+            } else {
+                if( this._initialized ) this.$sidebarInner.css('left', style.inner.left);
             }
 
-            if( this._initialized ) this.$sidebarInner.css('left', style.inner.left);
-
-            this.$sidebar.css(style.outer);
             this.affixedType = affixType;
         },
 
@@ -471,16 +470,6 @@
             this.stickyPosition(true);
         },
 
-        /**
-         * RequestAnimationFrame wrapper.
-         * @public
-         */
-        animateSticky: function(){
-            requestAnimationFrame( $.proxy(function(){
-                this.stickyPosition();
-            }, this) );
-        },
-        
         /**
          * Add resize sensor listener to specifc element.
          * @public
@@ -561,15 +550,10 @@
          */
         _resizeListener: function(event){
             var _window = event.target || event.srcElement;
+            var trigger = _window.resizeTrigger;
             
-            cancelAnimationFrame(_window.resizeSensorRAF);
-
-            _window.resizeSensorRAF = requestAnimationFrame(function(){
-                var trigger = _window.resizeTrigger;
-
-                trigger.resizeListeners.forEach(function(callback){
-                    callback.call(trigger, event);
-                });
+            trigger.resizeListeners.forEach(function(callback){
+                callback.call(trigger, event);
             });
         },
 
